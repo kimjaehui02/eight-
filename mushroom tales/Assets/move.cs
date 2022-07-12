@@ -4,7 +4,19 @@ using UnityEngine;
 
 public class move : MonoBehaviour
 {
-    public float speed;
+    private Animator Animator;
+
+    private float speed;
+
+    private void Awake()
+    {
+        Animator = gameObject.GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        speed = 1;
+    }
 
     // Update is called once per frame
     void Update()
@@ -22,7 +34,18 @@ public class move : MonoBehaviour
         Vector3 nextPos = new Vector3(h, v, 0) * speed * Time.deltaTime;
 
         transform.position = curPos + nextPos;
-    
+
+        Debug.Log(v);
+
+        Animator.SetInteger("Ver", (int)v);
+
+
+
+    }
+
+    private void movingAnim()
+    {
+
     }
 
 }
