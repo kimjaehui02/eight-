@@ -35,7 +35,6 @@ public class move : MonoBehaviour
 
         transform.position = curPos + nextPos;
 
-        Debug.Log(v);
 
         Animator.SetInteger("Ver", (int)v);
 
