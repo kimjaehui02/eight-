@@ -62,5 +62,10 @@ public class PlayerUi : MonoBehaviour
         Spbar.sizeDelta = vector22;
     }
 
+    public void HpChange(float input)
+    {
+        Hp += input;
+
+    }
 
 }
