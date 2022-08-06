@@ -29,6 +29,8 @@ public class move : MonoBehaviour
     private bool hide;
 
 
+    public List<GameObject> gameItems;
+
     #endregion
 
     #region default

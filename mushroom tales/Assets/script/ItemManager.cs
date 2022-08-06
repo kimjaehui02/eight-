@@ -22,19 +22,19 @@ public class ItemManager : MonoBehaviour
         Vector3 destination = Vector3.zero;
         if (Up == true)
         {
-            destination = new Vector3(0, 0.25f, 0);
+            destination = new Vector3(0, 0.2f, 0);
             Up = false;
 
         }
         else
         {
-            destination = new Vector3(0, -0.25f, 0);
+            destination = new Vector3(0, -0.2f, 0);
             Up = true;
         }
-        while (Vector3.Distance(sprite.transform.localPosition, destination) > 0.17f)
+        while (Vector3.Distance(sprite.transform.localPosition, destination) > 0.15f)
         {
 
-            sprite.transform.localPosition = Vector3.Lerp(sprite.transform.localPosition, destination, 1 * Time.deltaTime);
+            sprite.transform.localPosition = Vector3.Lerp(sprite.transform.localPosition, destination, 0.8f * Time.deltaTime);
 
             yield return null;
         }
