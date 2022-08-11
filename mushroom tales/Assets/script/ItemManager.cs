@@ -4,46 +4,115 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    Vector3 vel = Vector3.zero;
-    public int itemnumber;
-    public GameObject sprite;
+    public GameObject itemSprite;
+    public SpriteRenderer itemColor;
+    /// <summary>
+    /// 아이템이 떠다니는듯한 느낌을 주기위해 조절하는 플로트값
+    /// </summary>
+    public float floating;
+    public bool floatingUp;
 
-    public bool Up;
-    private void Start()
+
+
+    public float lightFloat;
+    public bool lightUP;
+    public bool lightBool;
+
+    public int itemNumber;
+
+
+
+
+    private void Update()
     {
-        StartCoroutine(floating());
+        ItemFloat();
     }
-
-
-    #region 코루틴
-
-    IEnumerator floating()
+    
+    
+    private void ItemFloat()
     {
-        Vector3 destination = Vector3.zero;
-        if (Up == true)
+        if(floatingUp == true)
         {
-            destination = new Vector3(0, 0.2f, 0);
-            Up = false;
-
+            floating += Time.deltaTime;
         }
         else
         {
-            destination = new Vector3(0, -0.2f, 0);
-            Up = true;
+            floating -= Time.deltaTime;
         }
-        while (Vector3.Distance(sprite.transform.localPosition, destination) > 0.15f)
+
+        
+        if(floating > 0.2f)
         {
-
-            sprite.transform.localPosition = Vector3.Lerp(sprite.transform.localPosition, destination, 0.8f * Time.deltaTime);
-
-            yield return null;
+            floatingUp = false;
         }
-
-
-
-        StartCoroutine(floating());
+        
+        if(floating < -0.2f)
+        {
+            floatingUp = true;
+        }
+        
+        itemSprite.transform.localPosition = new Vector3(0, floating*0.2f, 0);
 
     }
+
+
+    public void Lighted()
+    {
+        if(lightBool == true)
+        {
+            return;
+        }
+        lightBool = true;
+        StartCoroutine(Lighting());
+    }
+
+    public void Darked()
+    {
+        lightBool = false;
+    }
+
+    #region 코루틴
+
+    IEnumerator Lighting()
+    {
+
+        while(true)
+        {
+            yield return null;
+            if (lightBool == false)
+            {
+                lightFloat = 100f;
+                itemColor.color = new Color(100 / 255f, 100 / 255f, 100 / 255f, 255 / 255f);
+                break;
+            }
+
+            if(lightUP == true)
+            {
+                lightFloat += 300 * Time.deltaTime;
+            }
+            else
+            {
+                lightFloat -= 300 * Time.deltaTime;
+            }
+
+
+            if(lightFloat > 255)
+            {
+                lightUP = false;
+            }
+
+            if(lightFloat < 100)
+            {
+                lightUP = true;
+            }
+
+            itemColor.color = new Color(lightFloat / 255f, lightFloat / 255f, lightFloat / 255f, 255 / 255f);
+        }
+
+
+    }
+
+
     #endregion
 }
 

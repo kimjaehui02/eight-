@@ -2,12 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class move : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
-    public GameObject sprite;
-    public GameObject game;
+    #region 스크립트,컴포넌트
+    /// <summary>
+    /// 아이템의 충돌때 사용하는 충돌처리용 스크립트
+    /// </summary>
+    public PlayerItemcolider playerItemcolider;
+
+    #endregion
+
+
+
 
     #region value
+
+    /// <summary>
+    /// 움직이는 캐릭터의 스프라이트들
+    /// </summary>
+    public GameObject sprite;
+    /// <summary>
+    /// 실제로 작동하는 가장 큰 부모 게임오브젝트
+    /// </summary>
+    public GameObject game;
+
     /// <summary>
     /// 캐릭터의 애니메이터
     /// </summary>
@@ -29,7 +47,7 @@ public class move : MonoBehaviour
     private bool hide;
 
 
-    public List<GameObject> gameItems;
+    //public List<GameObject> gameItems;
 
     #endregion
 
@@ -78,11 +96,11 @@ public class move : MonoBehaviour
         {
             h = 0;
             v = 0;
-            
+
         }
-        
+
         Animator.SetBool("hide", hide);
-        
+
 
         Vector3 nextPos = new Vector3(h, v, 0) * speed * Time.deltaTime;
 
@@ -130,18 +148,18 @@ public class move : MonoBehaviour
     {
         Debug.Log(shakeint);
         shakeint++;
-        if(shakeint % 2== 1)
+        if (shakeint % 2 == 1)
         {
-            sprite.gameObject.transform.localPosition = new Vector2(0.1f,0.8f);
+            sprite.gameObject.transform.localPosition = new Vector2(0.1f, 0.8f);
         }
         else
         {
             sprite.gameObject.transform.localPosition = new Vector2(-0.1f, 0.8f);
         }
 
-        sprite.GetComponent<SpriteRenderer>().color = new Color(255/255f, 100/255f, 100/255f);
+        sprite.GetComponent<SpriteRenderer>().color = new Color(255 / 255f, 100 / 255f, 100 / 255f);
 
-        if(shakeint != 5)
+        if (shakeint != 5)
         {
             yield return new WaitForSeconds(0.05f);
             StartCoroutine(shaked());
@@ -153,12 +171,13 @@ public class move : MonoBehaviour
             shakeint = 0;
         }
 
-        
+
     }
 
-    
+
 
 
     #endregion
+
 
 }
