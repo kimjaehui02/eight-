@@ -18,7 +18,7 @@ public class PlayerItemcolider : MonoBehaviour
 
     public void check()
     {
-        if(gameObjects.Count == 0)
+        if(gameObjects.Count == 0 || sqrMagnitudeObj == null)
         {
             return;
         }

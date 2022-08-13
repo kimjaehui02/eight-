@@ -10,9 +10,14 @@ public class PlayerManager : MonoBehaviour
     /// </summary>
     public PlayerItemcolider playerItemcolider;
 
+    /// <summary>
+    /// 공격용 막대기
+    /// </summary>
+    public GameObject AttackStick;
+
+    public PlayerUi playerUi;
+
     #endregion
-
-
 
 
     #region value
@@ -21,6 +26,7 @@ public class PlayerManager : MonoBehaviour
     /// 움직이는 캐릭터의 스프라이트들
     /// </summary>
     public GameObject sprite;
+
     /// <summary>
     /// 실제로 작동하는 가장 큰 부모 게임오브젝트
     /// </summary>
@@ -67,12 +73,13 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         moving();
-
+        changeUse();
+        chageItem();
 
     }
     #endregion
 
-
+    #region 커스텀 private
     private void moving()
     {
         // 좌우
@@ -81,27 +88,52 @@ public class PlayerManager : MonoBehaviour
         float v = Input.GetAxisRaw("Vertical");
         Vector3 curPos = game.transform.position;
 
+        // 숨기 동작중인지를 체크하는 불
+        bool hidding = false;
+
+        if (Animator.GetCurrentAnimatorStateInfo(0).IsName("hideOut")
+              || Animator.GetCurrentAnimatorStateInfo(0).IsName("hide"))
+        {
+            hidding = true;
+        }
+
+        // 숨기키를 누르면 숨기 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             hide = true;
         }
 
+        // 숨기키를 떼면 다시 나오기
         if (Input.GetKeyUp(KeyCode.Space))
         {
             hide = false;
         }
 
-        if (hide == true || Animator.GetCurrentAnimatorStateInfo(0).IsName("hideOut")
-                         || Animator.GetCurrentAnimatorStateInfo(0).IsName("hide"))
+        // 숨기도중, 숨기 해제도중에는 안움직이게
+        if (hide == true || hidding == true)
         {
             h = 0;
             v = 0;
 
         }
 
-        Animator.SetBool("hide", hide);
+        Vector3 vector3attck = new Vector3(0, 0, 0);
+
+        if (Animator.GetCurrentAnimatorStateInfo(0).IsName("idleA") || Animator.GetCurrentAnimatorStateInfo(0).IsName("walkA"))
+        {
+            vector3attck = new Vector3(0, 0, 0);
+
+        }
+
+        if (Animator.GetCurrentAnimatorStateInfo(0).IsName("idleB") || Animator.GetCurrentAnimatorStateInfo(0).IsName("walkB"))
+        {
+            vector3attck = new Vector3(0, 0, 180);
+
+        }
 
 
+        #region 값을 사용하여 이동시킴
+        // 좌우 방향키의 누른값을 바탕으로 백터3값을 만듬
         Vector3 nextPos = new Vector3(h, v, 0) * speed * Time.deltaTime;
 
         // 오른쪽키와 윗키가 양수이다
@@ -109,31 +141,67 @@ public class PlayerManager : MonoBehaviour
         // 오른쪽키는 x좌표이고 hor
         // 윗키는 y좌표이고 ver
 
+        // 만들어진 벡터3값으로 실제로 이동시킴
         game.transform.position = curPos + nextPos;
 
+        AttackStick.transform.rotation = Quaternion.Euler(vector3attck);
 
+        #endregion
+
+
+
+
+        #region 애니메이터 값 변경
+
+        // 숨기 버튼을 눌렀는지에 따라서 애니메이션을 진행
+        Animator.SetBool("hide", hide);
+
+        // 입력받은 키보드값으로 진행할 애니메이션을 선택함
         Animator.SetInteger("Ver", (int)v);
         Animator.SetInteger("Horizontal", (int)h);
 
-        //if(h == 0 && v == 0)
-        //{
-        //    Animator.SetInteger("speed", 0);
-        //}
-        //else
-        //{
-        //    Animator.SetInteger("speed", 1);
-        //}
+        #endregion
 
 
 
     }
 
-    private void chageItem()
+    private void changeUse()
     {
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            GameManager.instance.TargetItem = (GameManager.instance.TargetItem +1) %3 ;
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            playerUi.colors[i].color = new Color(122/255f, 100/255f, 0/255f, 255f);
+        }
+        playerUi.colors[GameManager.instance.TargetItem].color = new Color(255/255f, 200.255f, 0/255f, 255/255f);
+    }
+
+    #endregion
+
+
+
+    #region 커스텀 public
+    public void chageItem()
+    {
+        if (playerItemcolider.sqrMagnitudeObj == null)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            playerUi.ItemChange(playerItemcolider.sqrMagnitudeObj.GetComponent<ItemManager>());
+        }
 
 
 
     }
+
+
 
     public void Shaking()
     {
@@ -141,6 +209,9 @@ public class PlayerManager : MonoBehaviour
 
 
     }
+    #endregion
+
+
 
     #region 코루틴
 

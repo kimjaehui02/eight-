@@ -133,11 +133,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemSprite: {fileID: 3979183046959832064}
   itemColor: {fileID: 3979183046959832079}
+  Sprite:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 7bd83b63f24b27f4fb05452861e38dca, type: 3}
+  - {fileID: 21300000, guid: c546ea54e7a82724e8cfceca056e0403, type: 3}
+  - {fileID: 21300000, guid: 6a96e24c7a83d484c844c4c020a89965, type: 3}
+  - {fileID: 21300000, guid: b41d8b98dfea782468f25839edd0307a, type: 3}
+  spritePassive:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: beb7445bc8d03a04c98d7b75af03f8ca, type: 3}
+  - {fileID: 21300000, guid: f7acb4d8a577bab44bf13ca8d9c09ab4, type: 3}
+  - {fileID: 21300000, guid: f770516ce93f15547aab5c0ebbda0aba, type: 3}
   floating: 0
   floatingUp: 0
   lightFloat: 100
   lightUP: 0
   lightBool: 0
+  passiveItem: 0
+  itemNumber: 0
 --- !u!58 &3979183047203675218
 CircleCollider2D:
   m_ObjectHideFlags: 0

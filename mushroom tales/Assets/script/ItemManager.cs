@@ -6,6 +6,9 @@ public class ItemManager : MonoBehaviour
 {
     public GameObject itemSprite;
     public SpriteRenderer itemColor;
+
+
+
     /// <summary>
     /// 아이템이 떠다니는듯한 느낌을 주기위해 조절하는 플로트값
     /// </summary>
@@ -18,9 +21,14 @@ public class ItemManager : MonoBehaviour
     public bool lightUP;
     public bool lightBool;
 
+    public bool passiveItem;
     public int itemNumber;
 
-
+    private void Start()
+    {
+        spriteChange();
+        //itemColor.sprite = Sprite[itemNumber];
+    }
 
 
     private void Update()
@@ -69,6 +77,24 @@ public class ItemManager : MonoBehaviour
     public void Darked()
     {
         lightBool = false;
+    }
+
+    public void spriteChange()
+    {
+        if (itemNumber ==0)
+        {
+            Destroy(gameObject);
+        }
+
+
+        if (passiveItem)
+        {
+            itemColor.sprite = GameManager.instance.PassiveSprites[itemNumber];
+        }
+        else
+        {
+            itemColor.sprite = GameManager.instance.ActiveSprites[itemNumber];
+        }
     }
 
     #region 코루틴
